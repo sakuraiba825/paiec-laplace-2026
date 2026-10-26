@@ -1,0 +1,96 @@
+Laplace Beta(1,1): runtime baseline and paired public-development reproduction
+Author: Yutong Xie (Tencent)
+Author-confirmed final Codabench target: 1004923. OpenReview submission is a separate action.
+Runtime model: model.py. Jeffreys is a public comparator only.
+
+1. Exact artifact
+model.py is byte-identical to the source inside the frozen Laplace submission.
+Model SHA-256: 325b3d6c1c0c4f8f67112aca48a8dedf8d5c7e4650d1f8547d7efd48cad0baba
+Original ZIP SHA-256: 3371a576a5a41a17f4ec08252ea70a967dde0f96fbba9531a821da2901073eef
+predict(input, labeled) needs only Python's standard library. It does not train,
+call APIs, download models, or access evaluation labels. Its runtime package
+contains only root-level model.py, without an acquisition override.
+
+2. Synthetic tests
+From the repository root:
+  python3 -B -m unittest discover -s tests -v
+The protocol tests need the optional public-analysis dependencies below.
+There are 29 synthetic tests; none uses hidden feedback or original questions.
+
+3. Authorized public data
+Obtain aims-foundations/measurement-db through its original access requirements:
+https://huggingface.co/datasets/aims-foundations/measurement-db
+Pin revision 54074453da7b9911be0f48e4c560be547bc84d21.
+public_manifest.json lists 74 domains and exactly four Parquet tables per domain
+(296 tables, 1,368,309,782 bytes total). DATA_DIR must directly contain:
+  afrieval/formatted_tables/benchmarks.parquet
+  afrieval/formatted_tables/subjects.parquet
+  afrieval/formatted_tables/items.parquet
+  afrieval/formatted_tables/responses.parquet
+The other domains have the same relative layout. Download only the listed files
+from the pinned revision using the dataset service's authorized tools.
+The public loader validates sizes, SHA-256, v3 schema, and public/binary/item
+catalog fields. The code release does not redistribute source Parquet files,
+question text, response labels, or private-test records. Original data licenses
+and access terms remain applicable.
+
+4. Optional public-analysis environment
+Validated environment: CPython 3.12.13, polars 2.1.0, pyarrow 26.0.0.
+  python3 -m venv .venv
+  .venv/bin/python -m pip install -r requirements.txt
+  .venv/bin/python -B -m unittest discover -s tests -v
+  .venv/bin/python -B reproduce_public.py --data-dir /path/to/public_snapshot --output-dir /path/to/new_public_output
+Replace both example paths. The output directory must not already exist.
+No NumPy dependency is needed. The main entry point verifies release_integrity.json
+before reading data and uses PublicSnapshot, not the legacy MeasurementSnapshot
+constructor. No old experiment directory or local account configuration is needed.
+
+5. Protocol and outputs
+The frozen selection uses one complete selected public pair in each of 74 domains.
+Seeds: 20261014, 20261015, 20261016; nested budgets: 0,1,3,7,15,31.
+ALC weights: 0.1,0.2,0.2,0.2,0.2,0.1.
+The local item split assigns ceil-half to acquisition and the remaining items to
+evaluation. Candidate order and selected acquired response are SHA-256 ranked.
+The default query is replayed with its remaining-budget context. Each acquired
+item supplies one recorded label. At each budget the actual frozen predict()
+functions are freshly loaded, predictions are cached only within that checkpoint
+by complete visible input, and all graded evaluation responses have equal weight.
+Only allowed visible attributes and purchased labels enter the model.
+
+The new output contains public_summary.json: domain/seed budget scores, aggregate
+ALC, descriptive bootstrap interval, environment, and integrity hashes. It does
+not output original questions, per-item labels, raw responses, or acquisition
+trajectories. The included reproduction/public_summary.json records the completed
+release-validation run, not a fresh independent statistical test.
+The public-reference comparison checked 4,017 numeric values, maximum absolute
+difference 1.6653345369377348e-16 (required tolerance 1e-12).
+Laplace ALC: 0.22503754069056203; Jeffreys ALC: 0.23094111247206206.
+74 domains / 222 domain-seed results / 296 source tables verified.
+
+prepare_metadata.py is a provenance utility that extracts only whitelisted public
+selection metadata and public J/A summary values from earlier local public files.
+Normal reproduction uses the committed frozen manifests and does NOT need to run
+this utility or possess those earlier files. core/ modules retain source provenance
+and are exact copies of the project's public protocol/data-schema code.
+
+6. Interpretation and disclosure
+These 74 domains were previously inspected during development; this is not a blind
+holdout or 222 independent domains. Domain-cluster bootstrap describes this panel.
+Item split, NULL filtering, recorded-response selection, and acquisition ordering
+are explicit local assumptions, not a byte-for-byte hidden coordinator replica.
+The analysis does not reproduce official private ALC or perform private-score
+counterfactuals. Different formative submissions are unpaired and may overlap.
+The final runtime model uses no fitted public prior or LLM inference.
+LLM-based assistants through WorkBuddy helped coding, debugging, analysis, and
+report drafting. The project has historical private-feedback-derived exploratory
+analyses; those are discontinued, are not in this release, and the whole project
+is not characterized as clean-room. Organizer interpretation of historical scope
+remains distinct from this public reproduction.
+
+7. Licenses
+Own code: MIT, Copyright (c) 2026 Yutong Xie, see LICENSE.txt.
+Technical report: CC BY 4.0, separate from the code license.
+Neither license changes the terms of source data or third-party materials.
+core/alc_harness_v3.py attributes the default-query formula to the official
+starting kit's streaming_ingestion.py lines 177-181 and retains source hashes.
+The core schema definitions reference the official parquet_schemas.yaml v3.

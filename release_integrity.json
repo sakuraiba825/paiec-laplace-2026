@@ -1,0 +1,31 @@
+{
+  "files_sha256": {
+    "LICENSE.txt": "15f154265789aa42c250ed4992b3840911aef9ff9d5f0fe7248a0c78420dc5b4",
+    "RUN_INSTRUCTIONS.txt": "89632d28cbc264fe67bb4d637c2bb75d916a35e341e8740cdf0d0bff5164018c",
+    "core/alc_harness_v3.py": "a84344cce0524f8729126be14d3c7a43f2005363509d2e702de3ceaba93c49e4",
+    "core/alc_harness_v3_records.py": "7d0844176db767d6325085f03cb63f43ab56de086052b50d9d00879d2a14d2ff",
+    "core/measurement_snapshot.py": "288dde5360c22859df5a77b68a9ecbb3b5bcede4b0b9592d2171d5bf5a20b93c",
+    "jeffreys_reference.py": "75d90e4d9332d9d0a8781a93e3e8fff91cd6581a58643f052bebca91eb8c3bb2",
+    "model.py": "325b3d6c1c0c4f8f67112aca48a8dedf8d5c7e4650d1f8547d7efd48cad0baba",
+    "prepare_metadata.py": "1f55dea77aa75db795fc262a2ccdcfb27bc4237d7f30bd6f034c1b0989e09d50",
+    "public_manifest.json": "c324835eb4bf4ec981275e12141ce1df77b1ed74dba9ff077357d314d98469ae",
+    "public_reference_summary.json": "63b88e21841b3cfad01ad6f38328ffd48fe48ba89d0aeb128ce207a9977cf6bd",
+    "public_snapshot.py": "f4f23caf9d91704801e8d98738892814fcee086b4b1cd902b94a905fe3f210be",
+    "reproduce_public.py": "27bebdd28fe4cc76de253a51d17130a93904cf905ddebaf872d8ca8f542b8e18",
+    "requirements.txt": "f2926c02d214d2e1bac5ae031464657e0be9b2979644a488f7d7aa6d72c5d9da",
+    "tests/test_model.py": "2b978d51b3b2e973704158b69e015511af3b79eb00722633f10657f5520b72c2",
+    "tests/test_protocol.py": "a8f25ebd3689019348818ec8488b305aa940393a42475e184a199e9c3b33ecf1",
+    "tests/test_reproduction.py": "64701532532a5a193367181b766d5b0ba8b96fbdc7fef6395688e623efbdf80e"
+  },
+  "model_source_exact_copy": true,
+  "submission_zip_sha256": "3371a576a5a41a17f4ec08252ea70a967dde0f96fbba9531a821da2901073eef",
+  "zip_member_model_exact_match": true,
+  "core_exact_copies": {
+    "measurement_snapshot.py": true,
+    "alc_harness_v3.py": true,
+    "alc_harness_v3_records.py": true
+  },
+  "code_license": "MIT",
+  "copyright": "2026 Yutong Xie",
+  "third_party_and_data_license_scope": "不重新许可第三方材料或公开数据；原核心源码来源说明保留"
+}
